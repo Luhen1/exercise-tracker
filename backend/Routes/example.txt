@@ -1,0 +1,35 @@
+router.post("/login", async (req, res) => {
+    
+    try {
+        const {email, password } = req.body;
+
+        //validate
+        if (!email || !password) 
+            return res.status(400).json({errorMessage:"Por favor, insere os dados corretamente"});
+
+         const existingUser = await User.findOne({email});
+         if( !existingUser)
+            return res.status(401).json({errorMessage: "Email ou senha está errado"});
+
+        const passwordCorrect = await bcrypt.compare(password, existingUser.passwordHash);
+        if(!passwordCorrect)
+            return res.status(401).json({errorMessage: "Email ou senha está errado"});
+
+        //sign token
+        const token = jwt.sign(
+            {
+                user: existingUser._id,
+            }, 
+            process.env.JWT_SECRET
+        );
+
+        res.cookie("token", token, {
+            httpOnly: true,
+        }).send();
+    }catch (err) {
+        console.error(err);
+        res.status(500).send();
+    }
+});
+
+module.exports = router;
