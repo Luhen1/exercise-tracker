@@ -7,6 +7,7 @@ const find = async (req,res) => {
 
         if (exercises) 
             res.status(200).json(exercises);
+            console.log("GET: all exercises complete");
     } catch (error) {
         res.status(404).json({message:error.message});
         }
@@ -15,7 +16,7 @@ const find = async (req,res) => {
     //Get that specific exercise
 const findById = (req, res) => {
     Exercise.findById(req.params.id)
-    .then(exercise => res.json(exercise))
+    .then(exercise => res.json(exercise), console.log("GET: specific exercise complete"))
     .catch(err => res.status(400).json('Error: ' + err));
 }
 
@@ -35,7 +36,7 @@ const add = (req, res) => {
         });
       
         newExercise.save()
-        .then(() => res.json('Exercise added!'))
+        .then(() => res.json('Exercise added!'), console.log("POST: Created a new exercise") )
         .catch(err => res.status(400).json('Error: ' + err));
       };
     
@@ -49,7 +50,7 @@ const edit = (req, res) => {
         exercise.date = Date.parse(req.body.date);
   
         exercise.save()
-          .then(() => res.json('Exercise updated!'))
+          .then(() => res.json('Exercise updated!'), console.log("PUT: Changed exercise's value"))
           .catch(err => res.status(400).json('Error: ' + err));
       })
       .catch(err => res.status(400).json('Error: ' + err));
@@ -57,7 +58,7 @@ const edit = (req, res) => {
     //Delete exercise
 const Delete = (req, res) => {
     Exercise.findByIdAndDelete(req.params.id)
-    .then(() => res.json('Exercise deleted.'))
+    .then(() => res.json('Exercise deleted.'), console.log("DELETE: deleted a specific exercise"))
     .catch(err => res.status(400).json('Error: ' + err));
 }
 

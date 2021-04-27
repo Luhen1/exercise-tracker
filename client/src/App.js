@@ -1,29 +1,29 @@
 import React from 'react';
 import {  BrowserRouter as Router, Switch, Route,} from "react-router-dom";
-import Login from "./components/login/login.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import './App.css';
-
+import Navbar from './components/navbar/navbar';
+import ListExercise from './components/exercise/ListExercise';
+import EditExercise from './components/exercise/EditExercise';
 import CreateExercise from './components/exercise/CreateExercise';
-import AddExercise from './components/exercise/addexercise';
-
 
 function App() {
   return (
-    
     <Router>
       <div className="app">
           <Switch>
+            <Route path="/exercise/list">
+              <ListExercise/>
+            </Route>
             <Route path="/exercise/create">
               <CreateExercise/>
             </Route>
-            <Route path="/login">
-              <Login />
+            <Route path="/exercise/edit">
+              <EditExercise/>
             </Route>
-            {/* this is the default route*/}
-            <Route path="/ExerciseList">
-              <AddExercise/>
-            </Route>
+          <Route path="/">
+            <Navbar/>
+              </Route>
           </Switch>
       </div>
     </Router>
